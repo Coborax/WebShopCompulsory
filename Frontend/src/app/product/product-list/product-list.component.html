@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col">
+    <h1>Products</h1>
+    <p>Only the best selection of premium boxes</p>
+    <hr>
+    <p *ngIf="!products || products.length == 0">There is no products yet!</p>
+  </div>
+</div>
+<app-loading [loading]="loadingProducts"></app-loading>
+<div class="row" *ngIf="products">
+  <div class="col-4" *ngFor="let product of products">
+    <div class="card my-3">
+      <img src="{{product.img}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{product.name}}</h5>
+        <p class="card-text">{{product.desc}}</p>
+        <a href="#" class="btn btn-primary mr-2"><i class="bi bi-info-circle"></i></a>
+        <a href="#" class="btn btn-success"><i class="bi bi-bag"></i></a>
+      </div>
+    </div>
+  </div>
+</div>

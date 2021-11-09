@@ -1,0 +1,13 @@
+<h3 class="blue-header">todos</h3>
+<h4>userId</h4>
+<!-- <input type="number" (change)="getTodosForUser()" [(ngModel)]="userId"> -->
+<select [(ngModel)]="userId" (change)="getTodosForUser()" >
+  <option *ngFor="let user of users" [value]="user.id">{{user.name}}</option>
+</select>
+<ul>
+  <li *ngFor="let todo of todos"
+    [ngClass]="todo.completed ? 'completed' : 'not-completed'">
+    id: {{todo.id}}
+    completed: {{todo.completed}}
+  </li>
+</ul>
