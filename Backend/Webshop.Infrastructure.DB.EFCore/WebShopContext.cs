@@ -23,7 +23,7 @@ namespace Webshop.Infrastructure.DB.EFCore
                 .RuleFor(p => p.Id, (f, _) => f.IndexFaker + 1)
                 .RuleFor(p => p.Name, (f, _) => f.Commerce.Product())
                 .RuleFor(p => p.Desc, (f, _) => f.Commerce.ProductDescription())
-                .RuleFor(p => p.Img, (_, _) => "assets/box.png");
+                .RuleFor(p => p.Img, (f, _) => f.Image.PicsumUrl());
 
             products.AddRange(productFaker.GenerateBetween(500, 1000));
             
