@@ -17,13 +17,31 @@ namespace WebShop.Domain.Tests.IRepositories
         }
 
         [Fact]
-        public void ReadAll_WithNgParams_ReturnsListOfProducts()
+        public void GetAll_WithNoParams_ReturnsListOfProducts()
         {
             var expected = new List<Object>();
             var mockRepo = new Mock<IRepo<Object>>();
+            
             mockRepo.Setup(mr => mr.GetAll())
                 .Returns(expected);
-            Assert.Equal(expected, mockRepo.Object.GetAll());
+
+            var actual =mockRepo.Object.GetAll() ;
+            
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Find_WithNoParams_ReturnsAnObject()
+        {
+            var expected = new Product();
+            var mockRepo = new Mock<IRepo<Object>>();
+            
+            mockRepo.Setup(mr => mr.Find(It.IsAny<int>()))
+                .Returns(expected);
+            
+            var actual = mockRepo.Object.Find(1);
+            
+            Assert.Equal(expected, actual);
         }
     }
 }
