@@ -3,12 +3,13 @@ using Bogus;
 using Bogus.Extensions;
 using Microsoft.EntityFrameworkCore;
 using WebShop.Core.Models;
+using Webshop.Infrastructure.DB.EFCore.Entities;
 
 namespace Webshop.Infrastructure.DB.EFCore
 {
     public class WebShopContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductEntity> Products { get; set; }
         
         public WebShopContext(DbContextOptions<WebShopContext> options) : base(options) { }
 
@@ -16,17 +17,17 @@ namespace Webshop.Infrastructure.DB.EFCore
         {
             base.OnModelCreating(modelBuilder);
 
-            List<Product> products = new List<Product>();
+            List<ProductEntity> products = new List<ProductEntity>();
 
-            Faker<Product> productFaker = new Faker<Product>()
+            Faker<ProductEntity> productFaker = new Faker<ProductEntity>()
                 .RuleFor(p => p.Id, (f, _) => f.IndexFaker + 1)
                 .RuleFor(p => p.Name, (f, _) => f.Commerce.Product())
                 .RuleFor(p => p.Desc, (f, _) => f.Commerce.ProductDescription())
                 .RuleFor(p => p.Img, (_, _) => "assets/box.png");
 
-            products.AddRange(productFaker.GenerateBetween(5000, 10000));
+            products.AddRange(productFaker.GenerateBetween(500, 1000));
             
-            modelBuilder.Entity<Product>().HasData(products);
+            modelBuilder.Entity<ProductEntity>().HasData(products);
         }
     }
 }

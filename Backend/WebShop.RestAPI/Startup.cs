@@ -16,6 +16,8 @@ using WebShop.Core.Models;
 using WebShop.Domain;
 using WebShop.Domain.Repositories;
 using Webshop.Infrastructure.DB.EFCore;
+using Webshop.Infrastructure.DB.EFCore.Entities;
+using Webshop.Infrastructure.DB.EFCore.Helpers;
 using Webshop.Infrastructure.DB.EFCore.Repositories;
 
 namespace WebShop.RestAPI
@@ -54,7 +56,9 @@ namespace WebShop.RestAPI
                 opt.UseSqlite("Data Source=WebShop.db");
             });
 
-            services.AddScoped<IRepo<Product>, EFCoreRepo<Product>>();
+            services.AddSingleton<IEntityConverter<Product, ProductEntity>, ProductEntityConverter>();
+
+            services.AddScoped<IRepo<Product>, EFCoreRepo<Product, ProductEntity>>();
             services.AddScoped<IUnitOfWork, EFCoreUnitOfWork>();
         }
 
