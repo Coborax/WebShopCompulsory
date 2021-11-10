@@ -6,16 +6,16 @@ namespace WebShop.Domain.Services
 {
     public class ProductService : IProductService
     {
-        private readonly ProductService _productService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductService(ProductService productService)
+        public ProductService(IUnitOfWork unitOfWork)
         {
-            _productService = productService;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<Product> GetAll()
         {
-            return _productService.GetAll();
+            return _unitOfWork.Products.GetAll();
         }
     }
 }

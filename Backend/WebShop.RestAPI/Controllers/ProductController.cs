@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebShop.Core.IServices;
 using WebShop.Domain;
+using WebShop.Domain.Services;
+using Webshop.Infrastructure.DB.EFCore.Entities;
 using WebShop.RestAPI.DTOs.Products;
 
 namespace WebShop.RestAPI.Controllers
@@ -13,19 +16,17 @@ namespace WebShop.RestAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductService _productService;
 
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController(IProductService productService)
         {
-            _unitOfWork = unitOfWork;
+            _productService = productService;
         }
 
         [HttpGet]
         public ActionResult<List<ProductDto>> Get()
         {
-            return _unitOfWork.Products.GetAll()
-                .Select(p => new ProductDto { Name = p.Name, Desc = p.Desc, Img = p.Img })
-                .ToList();
+            return Ok(_productService.GetAll());
         }
     }
 }

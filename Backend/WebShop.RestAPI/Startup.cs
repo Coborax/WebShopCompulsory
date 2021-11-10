@@ -12,10 +12,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using WebShop.Core.IServices;
 using WebShop.Core.Models;
 using WebShop.Core.Services;
 using WebShop.Domain;
 using WebShop.Domain.IRepositories;
+using WebShop.Domain.Services;
 using Webshop.Infrastructure.DB.EFCore;
 using Webshop.Infrastructure.DB.EFCore.Entities;
 using Webshop.Infrastructure.DB.EFCore.Helpers;
@@ -61,6 +63,8 @@ namespace WebShop.RestAPI
 
             services.AddScoped<IRepo<Product>, EFCoreRepo<Product, ProductEntity>>();
             services.AddScoped<IUnitOfWork, EFCoreUnitOfWork>();
+
+            services.AddScoped<IProductService, ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
