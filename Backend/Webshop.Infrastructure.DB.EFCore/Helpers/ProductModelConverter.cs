@@ -1,9 +1,10 @@
 using WebShop.Core.Models;
+using WebShop.Core.Services;
 using Webshop.Infrastructure.DB.EFCore.Entities;
 
 namespace Webshop.Infrastructure.DB.EFCore.Helpers
 {
-    public class ProductEntityConverter : IEntityConverter<Product, ProductEntity>
+    public class ProductModelConverter : IModelConverter<Product, ProductEntity>
     {
         public Product ToModel(ProductEntity entity)
         {

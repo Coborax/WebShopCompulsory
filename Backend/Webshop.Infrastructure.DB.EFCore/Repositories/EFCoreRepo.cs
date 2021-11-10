@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WebShop.Core.Services;
 using WebShop.Domain.Repositories;
 using Webshop.Infrastructure.DB.EFCore.Helpers;
 
@@ -8,9 +9,9 @@ namespace Webshop.Infrastructure.DB.EFCore.Repositories
     public class EFCoreRepo<T, TEntity> : IRepo<T> where TEntity : class
     {
         protected readonly WebShopContext _ctx;
-        private readonly IEntityConverter<T, TEntity> _converter;
+        private readonly IModelConverter<T, TEntity> _converter;
 
-        public EFCoreRepo(WebShopContext ctx, IEntityConverter<T, TEntity> converter)
+        public EFCoreRepo(WebShopContext ctx, IModelConverter<T, TEntity> converter)
         {
             _ctx = ctx;
             _converter = converter;

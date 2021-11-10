@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WebShop.Core.Models;
+using WebShop.Core.Services;
 using WebShop.Domain;
 using WebShop.Domain.Repositories;
 using Webshop.Infrastructure.DB.EFCore;
@@ -56,7 +57,7 @@ namespace WebShop.RestAPI
                 opt.UseSqlite("Data Source=WebShop.db");
             });
 
-            services.AddSingleton<IEntityConverter<Product, ProductEntity>, ProductEntityConverter>();
+            services.AddSingleton<IModelConverter<Product, ProductEntity>, ProductModelConverter>();
 
             services.AddScoped<IRepo<Product>, EFCoreRepo<Product, ProductEntity>>();
             services.AddScoped<IUnitOfWork, EFCoreUnitOfWork>();
