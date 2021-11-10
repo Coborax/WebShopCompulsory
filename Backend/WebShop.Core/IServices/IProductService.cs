@@ -5,6 +5,6 @@ namespace WebShop.Core.IServices
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetAll();
+        FilteredList GetAll();
     }
 }
