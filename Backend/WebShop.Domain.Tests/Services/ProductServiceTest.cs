@@ -14,8 +14,14 @@ namespace WebShop.Domain.Tests.Services
         [Fact]
         public void ProductService_WithIProductRepositoryAsParam_ImplementsIProductService()
         {
-            var repoMock = new Mock<IProductRepository>();
-            var service = new ProductService(repoMock.Object);
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>(); 
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+            
+            var service = new ProductService(mockUow.Object);
+            
             Assert.IsAssignableFrom<IProductService>(service);
         }
 
@@ -34,8 +40,13 @@ namespace WebShop.Domain.Tests.Services
         [Fact]
         public void GetAll_CallsProductRepositoryReadAll_Once()
         {
-            var mockRepo = new Mock<IProductRepository>();
-            var service = new ProductService(mockRepo.Object);
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>(); 
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+            
+            var service = new ProductService(mockUow.Object);
 
             service.GetAll();
             
@@ -45,18 +56,20 @@ namespace WebShop.Domain.Tests.Services
         [Fact]
         public void GetAll_CallsProductRepositoryReadAll_ReturnsFilteredList()
         {
-            var expected = new FilteredList
+            var expected = new List<Product>
             {
-                List = new List<Product>
-                {
-                    new Product{Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link"},
-                    new Product{Id = 2, Name = "Test2", Desc = "Description for this", Img = "fake/link"}
-                }
+                new Product { Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link" },
+                new Product { Id = 2, Name = "Test2", Desc = "Description for this", Img = "fake/link" }
             };
 
-            var mockRepo = new Mock<IProductRepository>();
+            var mockRepo = new Mock<IRepo<Product>>();
             mockRepo.Setup(r => r.GetAll()).Returns(expected);
-            var service = new ProductService(mockRepo.Object);
+            var mockUow = new Mock<IUnitOfWork>(); 
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+            
+            var service = new ProductService(mockUow.Object);
 
             var actual = service.GetAll();
             
