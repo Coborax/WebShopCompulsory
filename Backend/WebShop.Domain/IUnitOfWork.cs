@@ -1,5 +1,5 @@
 using WebShop.Core.Models;
-using WebShop.Domain.Repositories;
+using WebShop.Domain.IRepositories;
 
 namespace WebShop.Domain
 {

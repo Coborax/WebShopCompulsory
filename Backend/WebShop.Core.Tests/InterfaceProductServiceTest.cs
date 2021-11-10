@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using WebShop.Core.IServices;
 using WebShop.Core.Models;
-using WebShop.Core.Services;
 using Xunit;
 
 namespace WebShop.Core.Tests
 {
-    public class IProductServiceTest
+    public class InterfaceProductServiceTest
     {
         [Fact]
-        public void IProductServiceIsAvailable()
+        public void InterfaceProductServiceIsAvailable()
         {
             var service = new Mock<IProductService>().Object;
             Assert.NotNull(service);

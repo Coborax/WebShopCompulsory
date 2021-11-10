@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using WebShop.Core.Models;
 
-namespace WebShop.Core.Services
+namespace WebShop.Core.IServices
 {
     public interface IProductService
     {

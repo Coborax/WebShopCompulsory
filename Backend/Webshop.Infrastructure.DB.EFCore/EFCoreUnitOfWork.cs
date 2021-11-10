@@ -1,6 +1,6 @@
 using WebShop.Core.Models;
 using WebShop.Domain;
-using WebShop.Domain.Repositories;
+using WebShop.Domain.IRepositories;
 
 namespace Webshop.Infrastructure.DB.EFCore
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using WebShop.Core.IServices;
 using WebShop.Core.Models;
-using WebShop.Core.Services;
 
 namespace WebShop.Domain.Services
 {

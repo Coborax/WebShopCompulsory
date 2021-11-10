@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WebShop.Domain.Repositories;
+using WebShop.Domain.IRepositories;
 
 namespace Webshop.Infrastructure.DB.EFCore.Repositories
 {
