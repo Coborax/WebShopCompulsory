@@ -23,8 +23,8 @@ namespace WebShop.Core.Tests.IServices
             {
                 List = new List<Product>
                 {
-                    new Product {Id = 1, Name = "P1"},
-                    new Product {Id = 2, Name = "P2"}
+                    new Product {Id = 1, Name = "P1", Desc = "Description for this", Img = "fake/link"},
+                    new Product {Id = 2, Name = "P2", Desc = "Description for this", Img = "fake/link"}
                 }
             };
             serviceMock.Setup(ps => ps.GetAll())

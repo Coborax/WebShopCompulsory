@@ -31,12 +31,28 @@ namespace WebShop.Core.Tests.Models
             _product.Name = expected;
             Assert.Equal(expected, _product.Name);
         }
+        
+        [Fact]
+        public void ProductClass_HasDescription_WithTypeString()
+        {
+            string expected = "This is the description string, not much here";
+            _product.Desc = expected;
+            Assert.Equal(expected, _product.Desc);
+        }
+        
+        [Fact]
+        public void ProductClass_HasImageLink_WithTypeString()
+        {
+            string expected = "url/img";
+            _product.Img = expected;
+            Assert.Equal(expected, _product.Img);
+        }
 
         [Fact]
         public void Equals_WithProductWithSameProperties_ReturnTrue()
         {
-            var product1 = new Product {Id = 1, Name = "Smurf"};
-            var product2 = new Product {Id = 1, Name = "Smurf"};
+            var product1 = new Product {Id = 1, Name = "Smurf", Desc = "Description for this", Img = "fake/link"};
+            var product2 = new Product {Id = 1, Name = "Smurf", Desc = "Description for this", Img = "fake/link"};
             Assert.True(product1.Equals(product2));
             Assert.True(product2.Equals(product1));
             Assert.False(product1.Equals(null));

@@ -49,8 +49,8 @@ namespace WebShop.Domain.Tests.Services
             {
                 List = new List<Product>
                 {
-                    new Product{Id = 1, Name = "Test1"},
-                    new Product{Id = 2, Name = "Test2"}
+                    new Product{Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link"},
+                    new Product{Id = 2, Name = "Test2", Desc = "Description for this", Img = "fake/link"}
                 }
             };
 
