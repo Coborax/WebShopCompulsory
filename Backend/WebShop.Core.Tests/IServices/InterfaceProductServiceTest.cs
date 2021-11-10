@@ -19,13 +19,10 @@ namespace WebShop.Core.Tests.IServices
         public void GetAll_WithNoPrarms_ReturnsFilteredList()
         {
             var serviceMock = new Mock<IProductService>();
-            var expectedResult = new FilteredList
+            var expectedResult = new List<Product>
             {
-                List = new List<Product>
-                {
-                    new Product {Id = 1, Name = "P1", Desc = "Description for this", Img = "fake/link"},
-                    new Product {Id = 2, Name = "P2", Desc = "Description for this", Img = "fake/link"}
-                }
+                new Product { Id = 1, Name = "P1", Desc = "Description for this", Img = "fake/link" },
+                new Product { Id = 2, Name = "P2", Desc = "Description for this", Img = "fake/link" }
             };
             serviceMock.Setup(ps => ps.GetAll())
                 .Returns(expectedResult);
