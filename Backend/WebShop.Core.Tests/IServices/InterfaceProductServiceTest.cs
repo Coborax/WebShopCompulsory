@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;
 using Xunit;
 
-namespace WebShop.Core.Tests
+namespace WebShop.Core.Tests.IServices
 {
     public class InterfaceProductServiceTest
     {

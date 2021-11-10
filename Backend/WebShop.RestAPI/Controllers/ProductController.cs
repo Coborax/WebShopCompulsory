@@ -28,5 +28,13 @@ namespace WebShop.RestAPI.Controllers
         {
             return Ok(_productService.GetAll());
         }
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            _productService.Delete(_productService.GetById(id));
+
+            return NoContent();
+        }
     }
 }
