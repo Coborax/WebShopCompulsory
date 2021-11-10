@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WebShop.Domain.Repositories
+namespace WebShop.Domain.IRepositories
 {
     public interface IRepo<T>
     {

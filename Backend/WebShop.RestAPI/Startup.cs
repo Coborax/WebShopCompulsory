@@ -15,7 +15,7 @@ using Microsoft.OpenApi.Models;
 using WebShop.Core.Models;
 using WebShop.Core.Services;
 using WebShop.Domain;
-using WebShop.Domain.Repositories;
+using WebShop.Domain.IRepositories;
 using Webshop.Infrastructure.DB.EFCore;
 using Webshop.Infrastructure.DB.EFCore.Entities;
 using Webshop.Infrastructure.DB.EFCore.Helpers;

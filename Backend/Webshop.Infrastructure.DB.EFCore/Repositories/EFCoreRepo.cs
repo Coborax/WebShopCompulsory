@@ -3,6 +3,7 @@ using System.Linq;
 using WebShop.Core.Services;
 using WebShop.Domain.Repositories;
 using Webshop.Infrastructure.DB.EFCore.Helpers;
+using WebShop.Domain.IRepositories;
 
 namespace Webshop.Infrastructure.DB.EFCore.Repositories
 {
