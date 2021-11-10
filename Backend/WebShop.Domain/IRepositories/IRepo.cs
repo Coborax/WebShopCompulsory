@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WebShop.Core.Models;
 
 namespace WebShop.Domain.IRepositories
 {

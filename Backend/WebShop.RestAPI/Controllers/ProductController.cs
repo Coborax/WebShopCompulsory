@@ -28,5 +28,11 @@ namespace WebShop.RestAPI.Controllers
         {
             return Ok(_productService.GetAll());
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<ProductDto> GetById(int id)
+        {
+            return Ok(_productService.Find(id));
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace WebShop.Core.Tests.IServices
         }
 
         [Fact]
-        public void GetAll_WithNoPrarms_ReturnsFilteredList()
+        public void GetAll_WithNoPrarms_ReturnsList()
         {
             var serviceMock = new Mock<IProductService>();
             var expectedResult = new List<Product>
