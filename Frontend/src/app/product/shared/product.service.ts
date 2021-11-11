@@ -14,4 +14,8 @@ export class ProductService {
     return this.http.get<ProductDto[]>("https://localhost:5001/api/Product");
   }
 
+  getProductById(id: number): Observable<ProductDto> {
+    return this.http.get<ProductDto>("https://localhost:5001/api/Product/"+id);
+  }
+
 }

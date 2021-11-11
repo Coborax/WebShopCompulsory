@@ -6,5 +6,6 @@ namespace WebShop.Core.IServices
     public interface IProductService
     {
         IEnumerable<Product> GetAll();
+        Product Find(int id);
     }
 }
