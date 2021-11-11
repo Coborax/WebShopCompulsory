@@ -14,4 +14,8 @@ export class ProductService {
     return this.http.get<ProductDto[]>("https://localhost:5001/api/Product");
   }
 
+  deleteProduct(id: number): void {
+    this.http.delete("https://localhost:5001/api/Product?id=" + id)
+  }
+
 }

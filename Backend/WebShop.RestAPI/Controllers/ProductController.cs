@@ -32,7 +32,7 @@ namespace WebShop.RestAPI.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            _productService.Delete(_productService.GetById(id));
+            _productService.Delete(id);
 
             return NoContent();
         }

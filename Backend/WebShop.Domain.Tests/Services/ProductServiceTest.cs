@@ -4,6 +4,7 @@ using System.IO;
 using Moq;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;
+using WebShop.Domain.IRepositories;
 using WebShop.Domain.Services;
 using Xunit;
 using Xunit.Sdk;
@@ -63,16 +64,19 @@ namespace WebShop.Domain.Tests.Services
                 Img = null,
                 Name = "Product 1"
             };
-            
-            var mock = new Mock<IUnitOfWork>();
-            var service = new ProductService(mock.Object);
 
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            var service = new ProductService(mockUow.Object);
+            
             // Act
-            mock.Setup(r => r.Products.Delete(It.IsAny<Product>()));
-            service.Delete(prod);
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Delete(It.IsAny<Product>()));
+            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(prod);
+            service.Delete(prod.Id);
             
             // Assert
-            mock.Verify(r=>r.Products.Delete(prod));
+            mockRepo.Verify(r=>r.Delete(prod));
         }
         
         /// <summary>

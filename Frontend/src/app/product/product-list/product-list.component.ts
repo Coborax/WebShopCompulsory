@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ProductService} from "../shared/product.service";
 import {ProductDto} from "../shared/product.dto";
 
@@ -21,4 +21,7 @@ export class ProductListComponent implements OnInit {
     })
   }
 
+  delete(id: number) {
+    this.productService.deleteProduct(id);
+  }
 }
