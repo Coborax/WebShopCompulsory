@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Moq;
 using WebShop.Core.IServices;
@@ -7,7 +6,6 @@ using WebShop.Core.Models;
 using WebShop.Domain.IRepositories;
 using WebShop.Domain.Services;
 using Xunit;
-using Xunit.Sdk;
 
 namespace WebShop.Domain.Tests.Services
 {
@@ -80,14 +78,35 @@ namespace WebShop.Domain.Tests.Services
         }
         
         /// <summary>
-        /// Tests whether an InvalidDataExceptions gets thrown when a non existing entry gets deleted
+        /// Tests whether products are deleted once in the repository when called by the product service
         /// </summary>
         [Fact]
-        public void DeleteNotExistingProductWithIdThrowsInvalidDataException()
-        {
-            throw new TestClassException("not tested");
+        public void DeleteProductWithIdOnlyOnce()
+        { 
+            // Arrange
+            var prod = new Product
+            {
+                Id = 1,
+                Desc = "A cool product",
+                Img = null,
+                Name = "Product 1"
+            };
+            
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            var service = new ProductService(mockUow.Object);
+            
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Delete(It.IsAny<Product>()));
+            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(prod);
+            
+            // Act
+            service.Delete(prod.Id);
+            
+            // Assert
+            mockRepo.Verify(r=>r.Delete(prod), Times.Exactly(1));
         }
-        
+
         /// <summary>
         /// Tests whether the product service returns a list of all products 
         /// </summary>
@@ -111,12 +130,6 @@ namespace WebShop.Domain.Tests.Services
             
             // Assert
             Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetProductByIdReturnsProduct()
-        {
-            throw new TestClassException("not tested");
         }
     }
 }

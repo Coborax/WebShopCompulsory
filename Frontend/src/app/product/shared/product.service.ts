@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {ProductDto} from "./product.dto";
 import {HttpClient} from "@angular/common/http";
 
@@ -14,8 +14,7 @@ export class ProductService {
     return this.http.get<ProductDto[]>("https://localhost:5001/api/Product");
   }
 
-  deleteProduct(id: number): void {
-    this.http.delete("https://localhost:5001/api/Product?id=" + id)
+  deleteProduct(id: number): Observable<ProductDto> {
+    return this.http.delete<ProductDto>("https://localhost:5001/api/Product?id=" + id);
   }
-
 }

@@ -29,10 +29,16 @@ namespace WebShop.Domain.Services
             return _unitOfWork.Products.Find(id);
         }
 
-        public void Delete(int id)
+        public Product Delete(int id)
         {
-            _unitOfWork.Products.Delete(GetById(id));
+            var productDeleted = GetById(id);
+            
+            if (productDeleted == null)
+                throw new InvalidDataException();
+            
+            _unitOfWork.Products.Delete(productDeleted);
             _unitOfWork.Complete();
+            return productDeleted;
         }
     }
 }
