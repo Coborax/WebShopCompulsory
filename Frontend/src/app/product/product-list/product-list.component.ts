@@ -22,8 +22,8 @@ export class ProductListComponent implements OnInit {
     })
   }
 
-  delete(id: number) {
-    this.productService.deleteProduct(id)
+  delete(product: ProductDto) {
+    this.productService.deleteProduct(product.id)
       .subscribe(() => this.ngOnInit())
   }
 }
