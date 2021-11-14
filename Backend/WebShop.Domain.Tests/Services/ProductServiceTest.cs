@@ -15,13 +15,13 @@ namespace WebShop.Domain.Tests.Services
         public void ProductService_WithIProductRepositoryAsParam_ImplementsIProductService()
         {
             var mockRepo = new Mock<IRepo<Product>>();
-            var mockUow = new Mock<IUnitOfWork>(); 
+            var mockUow = new Mock<IUnitOfWork>();
             mockUow
                 .Setup(uow => uow.Products)
                 .Returns(mockRepo.Object);
-            
+
             var service = new ProductService(mockUow.Object);
-            
+
             Assert.IsAssignableFrom<IProductService>(service);
         }
 
@@ -34,22 +34,22 @@ namespace WebShop.Domain.Tests.Services
         public void ProductService_WithNullAsParam_ThrowsExceptionWithMessage()
         {
             var exception = Assert.Throws<InvalidDataException>(() => new ProductService(null));
-            Assert.Equal( "Unit of work Cannot be null", exception.Message);
+            Assert.Equal( "Unit of work cannot be null", exception.Message);
         }
 
         [Fact]
         public void GetAll_CallsProductRepositoryReadAll_Once()
         {
             var mockRepo = new Mock<IRepo<Product>>();
-            var mockUow = new Mock<IUnitOfWork>(); 
+            var mockUow = new Mock<IUnitOfWork>();
             mockUow
                 .Setup(uow => uow.Products)
                 .Returns(mockRepo.Object);
-            
+
             var service = new ProductService(mockUow.Object);
 
             service.GetAll();
-            
+
             mockRepo.Verify(r => r.GetAll(), Times.Once);
         }
 
@@ -64,21 +64,21 @@ namespace WebShop.Domain.Tests.Services
 
             var mockRepo = new Mock<IRepo<Product>>();
             mockRepo.Setup(r => r.GetAll()).Returns(expected);
-            var mockUow = new Mock<IUnitOfWork>(); 
+            var mockUow = new Mock<IUnitOfWork>();
             mockUow
                 .Setup(uow => uow.Products)
                 .Returns(mockRepo.Object);
-            
+
             var service = new ProductService(mockUow.Object);
 
             var actual = service.GetAll();
-            
+
             Assert.Equal(expected, actual);
         }
 
-        
+
         [Fact]
-        public void GetById_FindAProductById_ReturnAProduct()
+        public void Find_ReadAProductById_ReturnsAProduct()
         {
             var expected = new Product {Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link"};
             var mockRepo = new Mock<IRepo<Product>>();
@@ -93,6 +93,36 @@ namespace WebShop.Domain.Tests.Services
             var actual = service.Find(1);
 
             Assert.Equal(expected, actual);
+        }
+
+        /// <summary>
+        /// Tests whether products are deleted once in the repository when called by the product service
+        /// </summary>
+        [Fact]
+        public void Delete_ProductWithId_DeletesOnlyOnce()
+        {
+            // Arrange
+            var prod = new Product
+            {
+                Id = 1,
+                Desc = "A cool product",
+                Img = null,
+                Name = "Product 1"
+            };
+
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            var service = new ProductService(mockUow.Object);
+
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Delete(It.IsAny<Product>()));
+            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(prod);
+
+            // Act
+            service.Delete(prod.Id);
+
+            // Assert
+            mockRepo.Verify(r=>r.Delete(prod), Times.Exactly(1));
         }
     }
 }

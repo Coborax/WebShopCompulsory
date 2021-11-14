@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using WebShop.Core.Models;
 using WebShop.Core.Services;
+using WebShop.Domain;
 using WebShop.Domain.IRepositories;
 
 namespace Webshop.Infrastructure.DB.EFCore.Repositories
@@ -29,7 +31,9 @@ namespace Webshop.Infrastructure.DB.EFCore.Repositories
 
         public T Find(int id)
         {
-            return _converter.ToModel(_ctx.Set<TEntity>().Find(id));
+            var entity = _ctx.Set<TEntity>().Find(id);
+            _ctx.Entry(entity).State = EntityState.Detached;
+            return _converter.ToModel(entity);
         }
 
         public T Update(T toUpdate)

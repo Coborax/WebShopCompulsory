@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Moq;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;
@@ -9,39 +9,22 @@ namespace WebShop.Core.Tests.IServices
     public class InterfaceProductServiceTest
     {
         [Fact]
-        public void IProductService_Exist()
+        public void InterfaceProductServiceIsAvailable()
         {
-            var serviceMock = new Mock<IProductService>();
-            Assert.NotNull(serviceMock.Object);
+            var service = new Mock<IProductService>().Object;
+            Assert.NotNull(service);
         }
 
         [Fact]
-        public void GetAll_WithNoPrarms_ReturnsList()
+        public void GetProductWithNoParamsReturnsListOfAllProducts()
         {
-            var serviceMock = new Mock<IProductService>();
-            var expectedResult = new List<Product>
-            {
-                new Product { Id = 1, Name = "P1", Desc = "Description for this", Img = "fake/link" },
-                new Product { Id = 2, Name = "P2", Desc = "Description for this", Img = "fake/link" }
-            };
-            serviceMock.Setup(ps => ps.GetAll())
-                .Returns(expectedResult);
+            var mock = new Mock<IProductService>();
+            var fakeList = new List<Product>();
+            mock.Setup(s => s.GetAll())
+                .Returns(fakeList);
+            var service = mock.Object;
             
-            Assert.Equal(expectedResult, serviceMock.Object.GetAll());
-        }
-
-        [Fact]
-        public void Find_WithNoParams_ReturnsObject()
-        {
-            var serviceMock = new Mock<IProductService>();
-            var expected = new Product{ Id = 1, Name = "P1", Desc = "Description for this", Img = "fake/link" };
-
-            serviceMock.Setup(ps => ps.Find(It.IsAny<int>()))
-                .Returns(expected);
-
-            var actual = serviceMock.Object.Find(1);
-            
-            Assert.Equal(expected, actual);
+            Assert.Equal(fakeList, service.GetAll());
         }
     }
 }

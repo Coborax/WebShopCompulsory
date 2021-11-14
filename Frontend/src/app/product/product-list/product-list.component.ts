@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ProductService} from "../shared/product.service";
 import {ProductDto} from "../shared/product.dto";
 
@@ -15,10 +15,15 @@ export class ProductListComponent implements OnInit {
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
-      this.loadingProducts = false;
+    this.productService.getProducts()
+      .subscribe(products => {
+        this.products = products;
+        this.loadingProducts = false;
     })
   }
 
+  delete(product: ProductDto) {
+    this.productService.deleteProduct(product.id)
+      .subscribe(() => this.ngOnInit())
+  }
 }

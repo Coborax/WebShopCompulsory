@@ -25,7 +25,7 @@ namespace Webshop.Infrastructure.DB.EFCore
                 .RuleFor(p => p.Desc, (f, _) => f.Commerce.ProductDescription())
                 .RuleFor(p => p.Img, (_, _) => "assets/box.png");
 
-            products.AddRange(productFaker.GenerateBetween(500, 1000));
+            products.AddRange(productFaker.GenerateBetween(10, 20));
             
             modelBuilder.Entity<ProductEntity>().HasData(products);
         }

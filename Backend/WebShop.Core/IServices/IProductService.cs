@@ -7,5 +7,6 @@ namespace WebShop.Core.IServices
     {
         IEnumerable<Product> GetAll();
         Product Find(int id);
+        Product Delete(int id);
     }
 }
