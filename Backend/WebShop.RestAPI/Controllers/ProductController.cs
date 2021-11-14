@@ -29,5 +29,11 @@ namespace WebShop.RestAPI.Controllers
             var productDeleted = _productService.Delete(id);
             return Ok(productDeleted);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<ProductDto> GetById(int id)
+        {
+            return Ok(_productService.Find(id));
+        }
     }
 }

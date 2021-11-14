@@ -9,15 +9,14 @@ namespace WebShop.Core.Models
         public string Desc { get; set; }
         public string Img { get; set; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object ? obj)
         {
             var product = obj as Product;
-            
-            if (product == null)
+            if (obj == null)
             {
                 return false;
             }
-            return Id == product.Id && Name == product.Name && Desc == product.Desc && Img == product.Img;
+            return Id == product.Id && Name == product.Name;
         }
     }
 }

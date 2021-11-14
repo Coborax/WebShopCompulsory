@@ -1,0 +1,12 @@
+<a class="btn" (click)="goBack()"><i class="bi bi-arrow-left"></i> Go Back</a>
+<hr>
+<div class="row" *ngIf="product">
+  <div class="col-4">
+    <img src="{{product.img}}" style="width: 100%" alt="">
+  </div>
+  <div class="col-8">
+    <h1>{{product.name}}</h1>
+    <p>{{product.desc}}</p>
+    <a href="#" class="btn btn-success">Add to cart <i class="bi bi-bag"></i></a>
+  </div>
+</div>

@@ -15,8 +15,9 @@ namespace WebShop.Domain.Services
             {
                 throw new InvalidDataException("Unit of work cannot be null");
             }
-            
+
             _unitOfWork = unitOfWork;
+
         }
         
         public IEnumerable<Product> GetAll()
@@ -24,21 +25,21 @@ namespace WebShop.Domain.Services
             return _unitOfWork.Products.GetAll();
         }
 
-        public Product GetById(int id)
-        {
-            return _unitOfWork.Products.Find(id);
-        }
-
         public Product Delete(int id)
         {
             var productDeleted = GetById(id);
-            
+
             if (productDeleted == null)
                 throw new InvalidDataException();
-            
+
             _unitOfWork.Products.Delete(productDeleted);
             _unitOfWork.Complete();
             return productDeleted;
+        }
+
+        public Product Find(int id)
+        {
+            return _unitOfWork.Products.Find(id);
         }
     }
 }

@@ -11,78 +11,96 @@ namespace WebShop.Domain.Tests.Services
 {
     public class ProductServiceTest
     {
-        /// <summary>
-        /// Test whether the product service object uses the IProductService interface
-        /// </summary>
         [Fact]
-        public void ProductServiceIsIProductService()
+        public void ProductService_WithIProductRepositoryAsParam_ImplementsIProductService()
         {
-            // Arrange
-            var mock = new Mock<IUnitOfWork>();
-            var service = new ProductService(mock.Object);
-            
-            // Act & Assert
-            Assert.True(service is IProductService);
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+
+            var service = new ProductService(mockUow.Object);
+
+            Assert.IsAssignableFrom<IProductService>(service);
         }
 
-        /// <summary>
-        /// Tests whether the product service throws an InvalidDataException when it's instantiated with a null IUnitOfWork
-        /// </summary>
         [Fact]
-        public void ProductServiceWithNullIUnitOfWorkThrowsInvalidDataException()
+        public void ProductService_WithNullAsParam_ThrowsInvalidDataException()
         {
             Assert.Throws<InvalidDataException>(() => new ProductService(null));
         }
-        
-        /// <summary>
-        /// Tests whether the product service throws an InvalidDataException
-        /// with the message "Unit of work cannot be null when it's instantiated with a null IUnitOfWork
-        /// </summary>
         [Fact]
-        public void ProductServiceWithNullProductRepositoryThrowsExceptionWithMessage()
+        public void ProductService_WithNullAsParam_ThrowsExceptionWithMessage()
         {
-            // Arrange & Act
             var exception = Assert.Throws<InvalidDataException>(() => new ProductService(null));
-            
-            // Assert
-            Assert.Equal("Unit of work cannot be null", exception.Message);
+            Assert.Equal( "Unit of work Cannot be null", exception.Message);
         }
 
-        /// <summary>
-        /// Tests whether products are deleted when the delete method is called from product service
-        /// </summary>
         [Fact]
-        public void DeleteProductWithId()
+        public void GetAll_CallsProductRepositoryReadAll_Once()
         {
-            // Arrange
-            var prod = new Product
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+
+            var service = new ProductService(mockUow.Object);
+
+            service.GetAll();
+
+            mockRepo.Verify(r => r.GetAll(), Times.Once);
+        }
+
+        [Fact]
+        public void GetAll_CallsProductRepositoryReadAll_ReturnsList()
+        {
+            var expected = new List<Product>
             {
-                Id = 1,
-                Desc = "A cool product",
-                Img = null,
-                Name = "Product 1"
+                new Product { Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link" },
+                new Product { Id = 2, Name = "Test2", Desc = "Description for this", Img = "fake/link" }
             };
 
             var mockRepo = new Mock<IRepo<Product>>();
+            mockRepo.Setup(r => r.GetAll()).Returns(expected);
             var mockUow = new Mock<IUnitOfWork>();
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+
             var service = new ProductService(mockUow.Object);
-            
-            // Act
-            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
-            mockRepo.Setup(r => r.Delete(It.IsAny<Product>()));
-            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(prod);
-            service.Delete(prod.Id);
-            
-            // Assert
-            mockRepo.Verify(r=>r.Delete(prod));
+
+            var actual = service.GetAll();
+
+            Assert.Equal(expected, actual);
         }
-        
+
+
+        [Fact]
+        public void GetById_FindAProductById_ReturnAProduct()
+        {
+            var expected = new Product {Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link"};
+            var mockRepo = new Mock<IRepo<Product>>();
+            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(expected);
+            var mockUow = new Mock<IUnitOfWork>();
+            mockUow
+                .Setup(uow => uow.Products)
+                .Returns(mockRepo.Object);
+
+            var service = new ProductService(mockUow.Object);
+
+            var actual = service.Find(1);
+
+            Assert.Equal(expected, actual);
+        }
+
         /// <summary>
         /// Tests whether products are deleted once in the repository when called by the product service
         /// </summary>
         [Fact]
         public void DeleteProductWithIdOnlyOnce()
-        { 
+        {
             // Arrange
             var prod = new Product
             {
@@ -91,45 +109,20 @@ namespace WebShop.Domain.Tests.Services
                 Img = null,
                 Name = "Product 1"
             };
-            
+
             var mockRepo = new Mock<IRepo<Product>>();
             var mockUow = new Mock<IUnitOfWork>();
             var service = new ProductService(mockUow.Object);
-            
+
             mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
             mockRepo.Setup(r => r.Delete(It.IsAny<Product>()));
             mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(prod);
-            
+
             // Act
             service.Delete(prod.Id);
-            
+
             // Assert
             mockRepo.Verify(r=>r.Delete(prod), Times.Exactly(1));
-        }
-
-        /// <summary>
-        /// Tests whether the product service returns a list of all products 
-        /// </summary>
-        [Fact]
-        public void GetProductsWithoutFilterReturnsListOfAllProducts()
-        {
-            // Arrange
-            var expected = new List<Product>
-            {
-                new Product() {Id = 1, Name = "Product 1"},
-                new Product() {Id = 2, Name = "Product 2"}
-            };
-            
-            var mock = new Mock<IUnitOfWork>();
-            var service = new ProductService(mock.Object);
-            
-            // Act
-            mock.Setup(r => r.Products.GetAll())
-                .Returns(expected);
-            var actual = service.GetAll();
-            
-            // Assert
-            Assert.Equal(expected, actual);
         }
     }
 }

@@ -29,14 +29,14 @@ namespace WebShop.Core.Tests.Models
         {
             // Arrange
             int expected = 1;
-            
+
             // Act
             _product.Id = expected;
-            
+
             // Assert
             Assert.Equal(expected, _product.Id);
         }
-        
+
         /// <summary>
         /// Tests whether the object has a string for the name property
         /// </summary>
@@ -45,14 +45,14 @@ namespace WebShop.Core.Tests.Models
         {
             // Arrange
             string expected = "ACoolName";
-            
+
             // Act
             _product.Name = expected;
-            
+
             // Assert
             Assert.Equal(expected, _product.Name);
         }
-        
+
         /// <summary>
         /// Tests whether the object has a string for the description property
         /// </summary>
@@ -61,14 +61,14 @@ namespace WebShop.Core.Tests.Models
         {
             // Arrange
             string expected = "A description";
-            
+
             // Act
             _product.Desc = expected;
-            
+
             // Assert
             Assert.Equal(expected, _product.Desc);
         }
-        
+
         /// <summary>
         /// Tests whether the object has a string for the image property
         /// </summary>
@@ -77,10 +77,10 @@ namespace WebShop.Core.Tests.Models
         {
             // Arrange
             string expected = "./img.png";
-            
+
             // Act
             _product.Img = expected;
-            
+
             // Assert
             Assert.Equal(expected, _product.Img);
         }
@@ -95,8 +95,8 @@ namespace WebShop.Core.Tests.Models
             var product1 = new Product { Id = 1, Name = "Product 1", Desc = "A description", Img = "./img.png"};
             var product2 = new Product { Id = 2, Name = "Product 2", Desc = "A description", Img = "./img.png"};
             var product3 = new Product { Id = 1, Name = "Product 1", Desc = "A description", Img = "./img.png"};
-            var product4 = new Product { Id = 3, Name = "Product 1", Desc = "A description", Img = "./img.png"};            
-            
+            var product4 = new Product { Id = 3, Name = "Product 1", Desc = "A description", Img = "./img.png"};
+
             // Assert
             Assert.False(product1.Equals(product2));
             Assert.False(product2.Equals(product1));
