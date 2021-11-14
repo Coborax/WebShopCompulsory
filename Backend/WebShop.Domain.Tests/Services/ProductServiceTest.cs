@@ -34,7 +34,7 @@ namespace WebShop.Domain.Tests.Services
         public void ProductService_WithNullAsParam_ThrowsExceptionWithMessage()
         {
             var exception = Assert.Throws<InvalidDataException>(() => new ProductService(null));
-            Assert.Equal( "Unit of work Cannot be null", exception.Message);
+            Assert.Equal( "Unit of work cannot be null", exception.Message);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace WebShop.Domain.Tests.Services
 
 
         [Fact]
-        public void GetById_FindAProductById_ReturnAProduct()
+        public void Find_ReadAProductById_ReturnsAProduct()
         {
             var expected = new Product {Id = 1, Name = "Test1", Desc = "Description for this", Img = "fake/link"};
             var mockRepo = new Mock<IRepo<Product>>();
@@ -99,7 +99,7 @@ namespace WebShop.Domain.Tests.Services
         /// Tests whether products are deleted once in the repository when called by the product service
         /// </summary>
         [Fact]
-        public void DeleteProductWithIdOnlyOnce()
+        public void Delete_ProductWithId_DeletesOnlyOnce()
         {
             // Arrange
             var prod = new Product

@@ -24,14 +24,11 @@ namespace WebShop.Domain.Services
         {
             return _unitOfWork.Products.GetAll();
         }
-
+        
         public Product Delete(int id)
         {
-            var productDeleted = GetById(id);
-
-            if (productDeleted == null)
-                throw new InvalidDataException();
-
+            var productDeleted = Find(id);
+            
             _unitOfWork.Products.Delete(productDeleted);
             _unitOfWork.Complete();
             return productDeleted;

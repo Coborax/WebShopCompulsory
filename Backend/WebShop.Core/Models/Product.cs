@@ -1,5 +1,3 @@
-using System;
-
 namespace WebShop.Core.Models
 {
     public class Product

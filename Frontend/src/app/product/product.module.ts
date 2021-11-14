@@ -15,8 +15,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
   ],
   imports: [
     CommonModule,
-    ProductRoutingModule,
-    NgbAlertModule
+    ProductRoutingModule
   ]
 })
 export class ProductModule { }
