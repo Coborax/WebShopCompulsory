@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using WebShop.Core.Models;
 using WebShop.Core.Services;
 using WebShop.Domain.IRepositories;

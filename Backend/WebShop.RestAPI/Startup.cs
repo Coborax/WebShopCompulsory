@@ -56,12 +56,15 @@ namespace WebShop.RestAPI
 
             services.AddDbContext<WebShopContext>(opt =>
             {
+                opt.UseLazyLoadingProxies();
                 opt.UseSqlite("Data Source=WebShop.db");
             });
 
             services.AddSingleton<IModelConverter<Product, ProductEntity>, ProductModelConverter>();
+            services.AddSingleton<IModelConverter<User, UserEntity>, UserModelConverter>();
 
             services.AddScoped<IRepo<Product>, EFCoreRepo<Product, ProductEntity>>();
+            services.AddScoped<IRepo<User>, EFCoreRepo<User, UserEntity>>();
             services.AddScoped<IUnitOfWork, EFCoreUnitOfWork>();
 
             services.AddScoped<IProductService, ProductService>();
