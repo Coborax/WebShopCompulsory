@@ -29,5 +29,19 @@ namespace WebShop.Core.Tests.IServices
             
             Assert.Equal(expectedResult, serviceMock.Object.GetAll());
         }
+
+        [Fact]
+        public void Find_WithNoParams_ReturnsObject()
+        {
+            var serviceMock = new Mock<IProductService>();
+            var expected = new Product{ Id = 1, Name = "P1", Desc = "Description for this", Img = "fake/link" };
+
+            serviceMock.Setup(ps => ps.Find(It.IsAny<int>()))
+                .Returns(expected);
+
+            var actual = serviceMock.Object.Find(1);
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
