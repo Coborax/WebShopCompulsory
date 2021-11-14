@@ -18,6 +18,7 @@ using WebShop.Core.Services;
 using WebShop.Domain;
 using WebShop.Domain.IRepositories;
 using WebShop.Domain.Services;
+using WebShop.Infrastructure.Auth.JWT.Services;
 using Webshop.Infrastructure.DB.EFCore;
 using Webshop.Infrastructure.DB.EFCore.Entities;
 using Webshop.Infrastructure.DB.EFCore.Helpers;
@@ -64,10 +65,17 @@ namespace WebShop.RestAPI
             services.AddSingleton<IModelConverter<User, UserEntity>, UserModelConverter>();
 
             services.AddScoped<IRepo<Product>, EFCoreRepo<Product, ProductEntity>>();
-            services.AddScoped<IRepo<User>, EFCoreRepo<User, UserEntity>>();
+            services.AddScoped<IUserRepo, EFCoreUserRepo>();
             services.AddScoped<IUnitOfWork, EFCoreUnitOfWork>();
 
             services.AddScoped<IProductService, ProductService>();
+            
+            // Generate secret key
+            Byte[] secretBytes = new byte[40];
+            Random rand = new Random();
+            rand.NextBytes(secretBytes);
+            
+            services.AddSingleton<IAuthService>(new JWTAuthService(secretBytes));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

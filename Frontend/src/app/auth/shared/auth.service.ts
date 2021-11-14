@@ -12,6 +12,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(user: LoginUser): Observable<TokenDto> {
-    return this.http.post<TokenDto>("https://localhost:5001/api/Auth", user);
+    return this.http.post<TokenDto>("https://localhost:5001/api/Auth/Login", user);
+  }
+
+  register(user: LoginUser): Observable<string> {
+    return this.http.post<string>("https://localhost:5001/api/Auth/Register", user);
   }
 }

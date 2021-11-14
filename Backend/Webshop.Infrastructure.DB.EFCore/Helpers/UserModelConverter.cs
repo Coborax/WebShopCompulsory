@@ -8,13 +8,18 @@ namespace Webshop.Infrastructure.DB.EFCore.Helpers
     {
         public User ToModel(UserEntity entity)
         {
-            return new User
+            User model = new User
             {
                 Id = entity.Id,
                 Username = entity.Username,
                 Password = entity.Password,
-                Role = new Role { Id = entity.RoleId, Name = entity.Role.Name }
+                Role = new Role { Id = entity.RoleId }
             };
+
+            if (entity.Role != null)
+                model.Role.Name = entity.Role.Name;
+            
+            return model;
         }
 
         public UserEntity ToEntity(User model)

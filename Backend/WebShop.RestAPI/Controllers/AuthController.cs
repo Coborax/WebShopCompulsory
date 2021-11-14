@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebShop.Core.IServices;
+using WebShop.Core.Models;
+using WebShop.Domain;
 using WebShop.RestAPI.DTOs.Auth;
 
 namespace WebShop.RestAPI.Controllers
@@ -12,15 +10,50 @@ namespace WebShop.RestAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpPost]
-        public ActionResult<TokenDto> Login([FromBody] LoginDto dto)
+
+        private readonly IAuthService _authService;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public AuthController(IAuthService authService, IUnitOfWork unitOfWork)
         {
-            if ("mlm".Equals(dto.Username) && "1234".Equals(dto.Password))
+            _authService = authService;
+            _unitOfWork = unitOfWork;
+        }
+
+        [HttpPost("Login")]
+        public ActionResult<TokenDto> Login([FromBody] AuthDto dto)
+        {
+            User user = _unitOfWork.Users.Find(dto.Username);
+            if (user != null && _authService.VerifyPassword(dto.Password, user))
             {
-                return Ok(new TokenDto { JWTToken = "wauwSuchToken123" });
+                return Ok(new TokenDto { JWTToken = _authService.GenerateToken(user) });
             }
 
             return Unauthorized();
+        }
+        
+        [HttpPost("Register")]
+        public IActionResult Register([FromBody] AuthDto dto)
+        {
+
+            User user = _unitOfWork.Users.Find(dto.Username);
+            if (user != null)
+            {
+                return BadRequest("User with username already exists");
+            }
+
+            User newUser = new User { Username = dto.Username, Role = new Role { Id = 2 } };
+            newUser.Password = _authService.HashPassword(dto.Password);
+
+            newUser = _unitOfWork.Users.Create(newUser);
+            _unitOfWork.Complete();
+
+            if (newUser != null)
+            {
+                return Ok();
+            }
+
+            return BadRequest("Something went wrong");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Webshop.Infrastructure.DB.EFCore.Repositories
     public class EFCoreRepo<T, TEntity> : IRepo<T> where TEntity : class
     {
         protected readonly WebShopContext _ctx;
-        private readonly IModelConverter<T, TEntity> _converter;
+        public readonly IModelConverter<T, TEntity> _converter;
 
         public EFCoreRepo(WebShopContext ctx, IModelConverter<T, TEntity> converter)
         {

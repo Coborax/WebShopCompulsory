@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WebShop.Infrastructure.Auth.JWT\WebShop.Infrastructure.Auth.JWT.csproj" />
       <ProjectReference Include="..\Webshop.Infrastructure.DB.EFCore\Webshop.Infrastructure.DB.EFCore.csproj" />
     </ItemGroup>
 

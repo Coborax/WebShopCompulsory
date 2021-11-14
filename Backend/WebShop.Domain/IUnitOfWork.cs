@@ -6,7 +6,7 @@ namespace WebShop.Domain
     public interface IUnitOfWork
     {
         IRepo<Product> Products { get; }
-        IRepo<User> Users { get; }
+        IUserRepo Users { get; }
         void Complete();
     }
 }
