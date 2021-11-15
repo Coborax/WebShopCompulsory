@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 using Moq;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;

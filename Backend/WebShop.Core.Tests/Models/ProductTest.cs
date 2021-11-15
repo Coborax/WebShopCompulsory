@@ -25,7 +25,7 @@ namespace WebShop.Core.Tests.Models
         /// Tests whether the object has an int for the id property
         /// </summary>
         [Fact]
-        public void ProductClassHasIdWithTypeInt()
+        public void ProductClass_HasIdWithTypeInt()
         {
             // Arrange
             int expected = 1;
@@ -41,7 +41,7 @@ namespace WebShop.Core.Tests.Models
         /// Tests whether the object has a string for the name property
         /// </summary>
         [Fact]
-        public void ProductClassHasNameWithTypeString()
+        public void ProductClass_HasNameWithTypeString()
         {
             // Arrange
             string expected = "ACoolName";
@@ -57,7 +57,7 @@ namespace WebShop.Core.Tests.Models
         /// Tests whether the object has a string for the description property
         /// </summary>
         [Fact]
-        public void ProductClassHasDescWithTypeString()
+        public void ProductClass_HasDescWithTypeString()
         {
             // Arrange
             string expected = "A description";
@@ -73,7 +73,7 @@ namespace WebShop.Core.Tests.Models
         /// Tests whether the object has a string for the image property
         /// </summary>
         [Fact]
-        public void ProductClassHasImageWithTypeString()
+        public void ProductClass_HasImageWithTypeString()
         {
             // Arrange
             string expected = "./img.png";
@@ -89,7 +89,7 @@ namespace WebShop.Core.Tests.Models
         /// Tests whether product properties are comparable
         /// </summary>
         [Fact]
-        public void EqualsWithProductWithSamePropertiesReturnTrue()
+        public void Equals_ProductWithSameProperties_ReturnTrue()
         {
             // Arrange
             var product1 = new Product { Id = 1, Name = "Product 1", Desc = "A description", Img = "./img.png"};
@@ -97,7 +97,7 @@ namespace WebShop.Core.Tests.Models
             var product3 = new Product { Id = 1, Name = "Product 1", Desc = "A description", Img = "./img.png"};
             var product4 = new Product { Id = 3, Name = "Product 1", Desc = "A description", Img = "./img.png"};
 
-            // Assert
+            // Act & Assert
             Assert.False(product1.Equals(product2));
             Assert.False(product2.Equals(product1));
             Assert.True(product1.Equals(product3));
