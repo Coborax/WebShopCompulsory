@@ -26,7 +26,7 @@ namespace WebShop.RestAPI.Controllers
         [HttpDelete]
         public ActionResult<Product> Delete(int id)
         {
-            var productDeleted = _productService.Delete(id);
+            var productDeleted = _productService.Delete(_productService.Find(id));
             return Ok(productDeleted);
         }
 
