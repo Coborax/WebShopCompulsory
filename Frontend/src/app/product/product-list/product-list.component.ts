@@ -12,14 +12,15 @@ export class ProductListComponent implements OnInit {
   products: ProductDto[] | undefined;
   loadingProducts: boolean = true;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {
+  }
 
   ngOnInit(): void {
     this.productService.getProducts()
       .subscribe(products => {
         this.products = products;
         this.loadingProducts = false;
-    })
+      })
   }
 
   delete(product: ProductDto) {

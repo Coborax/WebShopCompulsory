@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Moq;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;
@@ -173,6 +172,103 @@ namespace WebShop.Domain.Tests.Services
             // Assert
             Assert.Equal("Product is missing", actual.Message);
             mockRepo.Verify(r => r.Delete(null), Times.Never());
+        }
+
+        /// <summary>
+        /// Tests whether adding a valid product to the repository is possible
+        /// description and image path are optional
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="img"></param>
+        [Theory]
+        [InlineData(1, "Name", "Description", "/image.png")]
+        [InlineData(1, "Name", null, "/image.png")]
+        public void Create_ValidProduct(int id, string name, string desc, string img)
+        {
+            // Arrange
+            var mockUow = new Mock<IUnitOfWork>();
+            var mockRepo = new Mock<IRepo<Product>>();
+            var service = new ProductService(mockUow.Object);
+
+            Product product = new Product
+            {
+                Id = id,
+                Name = name,
+                Desc = desc,
+                Img = img
+            };
+            
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Create(product)).Returns(new Product());
+            
+            // Act
+            service.Create(product);
+            
+            // Assert
+            mockRepo.Verify(r =>r.Create(product), Times.Once);
+        }
+
+        /// <summary>
+        /// Tests whether the product service throws an ArgumentException when an argument does not
+        /// contain a valid property
+        /// 1. Name cannot be empty or null
+        /// 2. Image cannot be empty or null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="img"></param>
+        /// <param name="errorMessage"></param>
+        [Theory]
+        [InlineData(1, null, "description", "image", "Product name is null")]       // Name is null
+        [InlineData(1, "", "description", "image", "Product name is empty")]        // Name is empty
+        [InlineData(1, "Name", "description", "", "Product image is empty")]        // Image is empty
+        [InlineData(1, "Name", "description", null, "Product image is null")]       // Image is empty
+        public void Create_InvalidProduct_ThrowsArgumentException(int id, string name, string desc, string img, string errorMessage)
+        {
+            // Arrange
+            var mockUow = new Mock<IUnitOfWork>();
+            var mockRepo = new Mock<IRepo<Product>>();
+            var service = new ProductService(mockUow.Object);
+
+            Product product = new Product
+            {
+                Id = id,
+                Name = name,
+                Desc = desc,
+                Img = img
+            };
+            
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Create(product)).Returns(new Product());
+
+            // Act
+            var expectedException = Assert.Throws<ArgumentException>(() => service.Create(product));
+            
+            // Assert
+            Assert.Equal(errorMessage, expectedException.Message);
+            mockRepo.Verify(r => r.Create(product), Times.Never);
+        }
+
+        /// <summary>
+        /// Tests whether the product service throws an ArgumentException when the given product is null
+        /// </summary>
+        [Fact]
+        public void Create_ProductIsNull_ThrowsArgumentException()
+        {
+            // Arrange
+            var mockUow = new Mock<IUnitOfWork>();
+            var mockRepo = new Mock<IRepo<Product>>();
+            var service = new ProductService(mockUow.Object);
+            
+            // Act
+            var actual = Assert.Throws<ArgumentException>(() => service.Create(null));
+            
+            // Assert
+            Assert.Equal("Product is missing", actual.Message);
+            mockRepo.Verify(r => r.Create(null), Times.Never());
         }
     }
 }

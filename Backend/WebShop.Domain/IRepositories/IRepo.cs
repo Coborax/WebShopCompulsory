@@ -9,6 +9,6 @@ namespace WebShop.Domain.IRepositories
         IEnumerable<T> GetAll();
         T Find(int id);
         T Update(T toUpdate);
-        void Delete(T toDelete);
+        T Delete(T toDelete);
     }
 }

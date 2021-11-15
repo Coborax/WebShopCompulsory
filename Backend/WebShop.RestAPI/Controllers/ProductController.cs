@@ -17,6 +17,28 @@ namespace WebShop.RestAPI.Controllers
             _productService = productService;
         }
 
+        [HttpPost]
+        public ActionResult<Product> Create([FromBody] ProductDto productDto)
+        {
+            var product = new Product
+            {
+                Desc = productDto.Desc,
+                Img = productDto.Img,
+                Name = productDto.Name
+            };
+            
+            var productCreated = _productService.Create(product);
+
+            var productReturned = new ProductDto
+            {
+                Name = productCreated.Name,
+                Desc = productCreated.Desc,
+                Img = productCreated.Img
+            };
+            
+            return Ok(productReturned);
+        }
+
         [HttpGet]
         public ActionResult<List<ProductDto>> Get()
         {

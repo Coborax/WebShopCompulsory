@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;
@@ -18,7 +19,32 @@ namespace WebShop.Domain.Services
             }
 
             _unitOfWork = unitOfWork;
+        }
+        
+        public Product Create(Product productCreate)
+        {
+            if (productCreate == null)
+                throw new ArgumentException("Product is missing");
+            
+            switch (productCreate.Name)
+            {
+                case null:
+                    throw new ArgumentException("Product name is null");
+                case "":
+                    throw new ArgumentException("Product name is empty");
+            }
 
+            switch (productCreate.Img)
+            {
+                case null:
+                    throw new ArgumentException("Product image is null");
+                case "":
+                    throw new ArgumentException("Product image is empty");
+            }
+
+            var productReturn = _unitOfWork.Products.Create(productCreate);
+            _unitOfWork.Complete();
+            return productReturn;
         }
         
         public IEnumerable<Product> GetAll()
@@ -45,5 +71,6 @@ namespace WebShop.Domain.Services
         {
             return _unitOfWork.Products.Find(id);
         }
+        
     }
 }

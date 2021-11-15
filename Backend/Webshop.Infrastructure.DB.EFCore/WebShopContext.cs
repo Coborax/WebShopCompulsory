@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Bogus;
 using Bogus.Extensions;
 using Microsoft.EntityFrameworkCore;
-using WebShop.Core.Models;
 using Webshop.Infrastructure.DB.EFCore.Entities;
 
 namespace Webshop.Infrastructure.DB.EFCore
