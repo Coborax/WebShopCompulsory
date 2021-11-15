@@ -8,5 +8,6 @@ namespace WebShop.Core.IServices
         IEnumerable<Product> GetAll();
         Product Find(int id);
         Product Delete(Product productDelete);
+        Product UpdateProduct(Product updatedProduct);
     }
 }
