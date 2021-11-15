@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using WebShop.Core.IServices;
@@ -25,13 +26,19 @@ namespace WebShop.Domain.Services
             return _unitOfWork.Products.GetAll();
         }
         
-        public Product Delete(int id)
+        public Product Delete(Product productDelete)
         {
-            var productDeleted = Find(id);
+            if (productDelete == null)
+                throw new ArgumentException("Product is missing");
             
-            _unitOfWork.Products.Delete(productDeleted);
+            var productById = Find(productDelete.Id);
+
+            if (productById == null)
+                throw new InvalidDataException("Product does not exist");
+            
+            _unitOfWork.Products.Delete(productById);
             _unitOfWork.Complete();
-            return productDeleted;
+            return productById;
         }
 
         public Product Find(int id)

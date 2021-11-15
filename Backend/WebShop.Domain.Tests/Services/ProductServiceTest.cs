@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using Moq;
 using WebShop.Core.IServices;
 using WebShop.Core.Models;
@@ -96,10 +98,10 @@ namespace WebShop.Domain.Tests.Services
         }
 
         /// <summary>
-        /// Tests whether products are deleted once in the repository when called by the product service
+        /// Tests whether a valid product is deleted
         /// </summary>
         [Fact]
-        public void Delete_ProductWithId_DeletesOnlyOnce()
+        public void Delete_ValidProduct()
         {
             // Arrange
             var prod = new Product
@@ -115,14 +117,62 @@ namespace WebShop.Domain.Tests.Services
             var service = new ProductService(mockUow.Object);
 
             mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
-            mockRepo.Setup(r => r.Delete(It.IsAny<Product>()));
-            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns(prod);
+            mockRepo.Setup(r => r.Find(prod.Id)).Returns(prod);
 
             // Act
-            service.Delete(prod.Id);
+            service.Delete(prod);
 
             // Assert
-            mockRepo.Verify(r=>r.Delete(prod), Times.Exactly(1));
+            mockRepo.Verify(r => r.Find(prod.Id), Times.Once);
+            mockRepo.Verify(r=>r.Delete(prod), Times.Once);
+        }
+
+        /// <summary>
+        /// Tests whether an non existing product throws invalid data exception
+        /// </summary>
+        [Fact]
+        public void Delete_NonExistingProduct_ThrowsInvalidDataException()
+        {
+            // Arrange
+            var mockUow = new Mock<IUnitOfWork>();
+            var mockRepo = new Mock<IRepo<Product>>();
+            var service = new ProductService(mockUow.Object);
+
+            var prod = new Product
+            {
+                Id = 1,
+                Desc = "A cool product",
+                Img = null,
+                Name = "Product 1"
+            };
+            
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns((Product) null);
+            
+            // Act
+            var actual = Assert.Throws<InvalidDataException>(() => service.Delete(prod));
+            
+            // Assert
+            Assert.Equal("Product does not exist", actual.Message);
+        }
+
+        /// <summary>
+        /// Tests whether the product service throws an argument exception when given a null as an argument 
+        /// </summary>
+        [Fact]
+        public void Delete_ProductIsNull_ThrowsArgumentException()
+        {
+            // Arrange
+            var mockUow = new Mock<IUnitOfWork>();
+            var mockRepo = new Mock<IRepo<Product>>();
+            var service = new ProductService(mockUow.Object);
+            
+            // Act
+            var actual = Assert.Throws<ArgumentException>(() => service.Delete(null));
+            
+            // Assert
+            Assert.Equal("Product is missing", actual.Message);
+            mockRepo.Verify(r => r.Delete(null), Times.Never());
         }
     }
 }
