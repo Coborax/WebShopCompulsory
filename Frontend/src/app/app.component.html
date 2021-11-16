@@ -8,9 +8,15 @@
       <div class="navbar-nav">
         <a class="nav-link" routerLink="products">Products</a>
       </div>
-      <div class="navbar-nav ml-auto">
-        <a class="btn btn-primary" routerLink="auth/login">Login</a>
+      <div class="navbar-nav ml-auto" *ngIf="user; else loggedOut">
+        <p class="mr-4">Logged in as: {{user.username}}</p>
+        <a class="btn btn-danger" (click)="logout()">Logout</a>
       </div>
+      <ng-template #loggedOut>
+        <div class="navbar-nav ml-auto">
+          <a class="btn btn-primary" routerLink="auth/login">Login</a>
+        </div>
+      </ng-template>
     </div>
   </div>
 </nav>

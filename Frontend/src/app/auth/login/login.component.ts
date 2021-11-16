@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         .subscribe(token => {
           console.log('trying to login')
           if(token && token.jwtToken) {
-            localStorage.setItem('currentUser', JSON.stringify({token: token.jwtToken}));
+            localStorage.setItem('currentUser', JSON.stringify(token));
             this.router.navigateByUrl('products');
           }
           else {

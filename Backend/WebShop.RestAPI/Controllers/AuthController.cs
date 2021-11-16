@@ -26,7 +26,11 @@ namespace WebShop.RestAPI.Controllers
             User user = _unitOfWork.Users.Find(dto.Username);
             if (user != null && _authService.VerifyPassword(dto.Password, user))
             {
-                return Ok(new TokenDto { JWTToken = _authService.GenerateToken(user) });
+                return Ok(new TokenDto
+                {
+                    JWTToken = _authService.GenerateToken(user), 
+                    User = new UserDto { Id = user.Id, Username = user.Username }
+                });
             }
 
             return Unauthorized();
