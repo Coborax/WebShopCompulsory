@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,19 +13,35 @@ namespace WebShop.Domain.Services
 
         public ProductService(IUnitOfWork unitOfWork)
         {
-            if(unitOfWork == null)
+            if (unitOfWork == null)
             {
-                 throw new InvalidDataException("Unit of work Cannot be null");
+                throw new InvalidDataException("Unit of work cannot be null");
             }
+
             _unitOfWork = unitOfWork;
 
         }
-
+        
         public IEnumerable<Product> GetAll()
         {
             return _unitOfWork.Products.GetAll();
         }
         
+        public Product Delete(Product productDelete)
+        {
+            if (productDelete == null)
+                throw new ArgumentException("Product is missing");
+            
+            var productById = Find(productDelete.Id);
+
+            if (productById == null)
+                throw new InvalidDataException("Product does not exist");
+            
+            _unitOfWork.Products.Delete(productById);
+            _unitOfWork.Complete();
+            return productById;
+        }
+
         public Product Find(int id)
         {
             return _unitOfWork.Products.Find(id);

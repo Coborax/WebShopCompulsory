@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,9 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebShop.Core.IServices;
-using WebShop.Domain;
-using WebShop.Domain.Services;
-using Webshop.Infrastructure.DB.EFCore.Entities;
+using WebShop.Core.Models;
 using WebShop.RestAPI.DTOs.Products;
 
 namespace WebShop.RestAPI.Controllers
@@ -29,6 +26,13 @@ namespace WebShop.RestAPI.Controllers
         public ActionResult<List<ProductDto>> Get()
         {
             return Ok(_productService.GetAll());
+        }
+
+        [HttpDelete]
+        public ActionResult<Product> Delete(int id)
+        {
+            var productDeleted = _productService.Delete(_productService.Find(id));
+            return Ok(productDeleted);
         }
 
         [HttpGet("{id}")]
