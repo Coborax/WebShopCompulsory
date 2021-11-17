@@ -43,20 +43,19 @@ namespace WebShop.Domain.Services
 
         public Product UpdateProduct(Product updatedProduct)
         {
-            // if (updatdedProduct.Desc == null || updatdedProduct.Equals(""))
-            // {
-            //     return BadRequest("Product description cannot be empty");
-            // }
-            //
-            // if (updatdedProduct.Name == null || updatdedProduct.Name.Equals(""))
-            // {
-            //     return BadRequest("Product name cannot be empty");
-            // }
+            if (updatedProduct == null)
+            {
+                throw new ArgumentException("Product to update is null");
+            }
             
             var oldProduct = Find(updatedProduct.Id);
+            if (oldProduct == null)
+            {
+                throw new InvalidDataException("Product does not exist");
+            }
             oldProduct.Desc = updatedProduct.Desc;
             oldProduct.Name = updatedProduct.Name;
-            var updatedProductFromDb = _unitOfWork.Products.Update(oldProduct);
+            var updatedProductFromDb = _unitOfWork.Products.Update(updatedProduct);
             _unitOfWork.Complete();
             return updatedProductFromDb;
         }
