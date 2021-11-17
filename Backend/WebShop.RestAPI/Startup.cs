@@ -75,6 +75,11 @@ namespace WebShop.RestAPI
                 };
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Administrator"));
+            });
+
             services.AddDbContext<WebShopContext>(opt =>
             {
                 opt.UseLazyLoadingProxies();
@@ -106,8 +111,20 @@ namespace WebShop.RestAPI
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var ctx = scope.ServiceProvider.GetService<WebShopContext>();
+                    var uow = scope.ServiceProvider.GetService<IUnitOfWork>();
+                    var auth = scope.ServiceProvider.GetService<IAuthService>();
+
                     ctx.Database.EnsureDeleted();
                     ctx.Database.EnsureCreated();
+                    
+                    
+                    uow.Users.Create(new User
+                    {
+                        Username = "admin", 
+                        Password = auth.HashPassword("admin"),
+                        Role = new Role { Id = 2 }
+                    });
+                    uow.Complete();
                 }
             }
 

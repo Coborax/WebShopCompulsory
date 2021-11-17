@@ -19,15 +19,6 @@ namespace Webshop.Infrastructure.DB.EFCore
         {
             base.OnModelCreating(modelBuilder);
 
-            List<UserEntity> users = new List<UserEntity>();
-            users.Add(new UserEntity
-            {
-                Id = 1,
-                Username = "Admin",
-                Password = "123",
-                RoleId = 2
-            });
-
             List<RoleEntity> roles = new List<RoleEntity>();
             roles.Add(new RoleEntity
             {
@@ -51,7 +42,6 @@ namespace Webshop.Infrastructure.DB.EFCore
             products.AddRange(productFaker.GenerateBetween(10, 20));
             
             modelBuilder.Entity<ProductEntity>().HasData(products);
-            modelBuilder.Entity<UserEntity>().HasData(users);
             modelBuilder.Entity<RoleEntity>().HasData(roles);
         }
     }

@@ -29,7 +29,7 @@ namespace WebShop.RestAPI.Controllers
                 return Ok(new TokenDto
                 {
                     JWTToken = _authService.GenerateToken(user), 
-                    User = new UserDto { Id = user.Id, Username = user.Username }
+                    User = new UserDto { Id = user.Id, Username = user.Username, Role = user.Role.Name}
                 });
             }
 
@@ -46,7 +46,7 @@ namespace WebShop.RestAPI.Controllers
                 return BadRequest("User with username already exists");
             }
 
-            User newUser = new User { Username = dto.Username, Role = new Role { Id = 2 } };
+            User newUser = new User { Username = dto.Username, Role = new Role { Id = 1 } };
             newUser.Password = _authService.HashPassword(dto.Password);
 
             newUser = _unitOfWork.Users.Create(newUser);

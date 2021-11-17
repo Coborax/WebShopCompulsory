@@ -29,6 +29,7 @@ namespace WebShop.RestAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "RequireAdmin")]
         public ActionResult<Product> Delete(int id)
         {
             var productDeleted = _productService.Delete(_productService.Find(id));
