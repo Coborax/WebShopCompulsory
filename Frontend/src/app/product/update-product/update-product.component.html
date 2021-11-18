@@ -1,5 +1,6 @@
-<div *ngIf="product">
-<h2>You are to update Product with id: {{product.id}}</h2>
+<div>
+<h2 *ngIf="product">You are to update Product with id: {{product.id}}</h2>
+<h2 *ngIf="product == undefined">Creating new Product</h2>
   <h4>Name </h4>
   <input type="text" [(ngModel)]="nameUp">
   <h4>Description </h4>

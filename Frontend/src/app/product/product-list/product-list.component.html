@@ -3,6 +3,7 @@
     <h1>Products</h1>
     <p>Only the best selection of premium boxes</p>
     <hr>
+    <a class="btn btn-success" style="float: right" *ngIf="user && user.role == 'Administrator'" routerLink="/products/create">Create Product <i class="bi bi-plus"></i></a>
     <p *ngIf="!products || products.length == 0">There is no products yet!</p>
   </div>
 </div>
@@ -14,7 +15,7 @@
       <div class="card-body">
         <h5 class="card-title">{{product.name}}</h5>
         <p class="card-text">{{product.desc}}</p>
-        <a href="#" class="btn btn-primary mr-2" [routerLink]="['/products', product.id]"><i class="bi bi-info-circle"></i></a>
+        <a href="#" class="btn btn-primary mr-2" [routerLink]="['/products/details', product.id]"><i class="bi bi-info-circle"></i></a>
         <a class="btn btn-dark" style="float: right" *ngIf="user && user.role == 'Administrator'" [routerLink]="['/products/update',product.id]"><i class="bi bi-pencil-square"></i></a>
         <a class="btn btn-danger" style="float: right" *ngIf="user && user.role == 'Administrator'" (click)="delete(product)"><i class="bi bi-trash"></i></a>
       </div>
