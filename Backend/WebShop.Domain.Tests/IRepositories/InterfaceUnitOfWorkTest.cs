@@ -12,10 +12,10 @@ namespace WebShop.Domain.Tests.IRepositories
         public void IUnitOfWorkExists()
         {
             // Arrange
-            var mockRepo = new Mock<IUnitOfWork>();
+            var mockUow = new Mock<IUnitOfWork>();
             
             // Assert
-            Assert.NotNull(mockRepo);
+            Assert.NotNull(mockUow);
         }
     }
 }

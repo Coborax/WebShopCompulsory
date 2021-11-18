@@ -15,6 +15,7 @@ export class ProductListComponent implements OnInit {
   loadingProducts: boolean = true;
   user: UserDto | undefined;
 
+
   constructor(private productService: ProductService, private authServie: AuthService) { }
 
   ngOnInit(): void {

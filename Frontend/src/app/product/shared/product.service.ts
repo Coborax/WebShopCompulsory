@@ -11,6 +11,13 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
+  createProducts(productCreate: ProductDto): Observable<ProductDto> {
+    const headers = { 'content-type': 'application/json'}
+    const body = JSON.stringify(productCreate)
+
+    return this.http.post<ProductDto>("https://localhost:5001/api/Product", body, {'headers':headers});
+  }
+
   getProducts(): Observable<ProductDto[]> {
     return this.http.get<ProductDto[]>("https://localhost:5001/api/Product");
   }
