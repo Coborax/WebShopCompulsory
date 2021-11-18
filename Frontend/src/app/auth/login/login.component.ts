@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         '',
         Validators.required
       ),
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -40,7 +40,8 @@ export class LoginComponent implements OnInit {
         .subscribe(token => {
           console.log('trying to login')
           if(token && token.jwtToken) {
-            this.router.navigateByUrl('pets');
+            localStorage.setItem('currentUser', JSON.stringify(token));
+            this.router.navigateByUrl('products');
           }
           else {
             console.log('login failed')
