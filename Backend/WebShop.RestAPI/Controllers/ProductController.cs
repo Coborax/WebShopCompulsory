@@ -43,9 +43,14 @@ namespace WebShop.RestAPI.Controllers
             {
                 return BadRequest("Product id and id must match.");
             }
-            Product updatedProduct = new Product
-                {Desc = updatdedProduct.Desc, Name = updatdedProduct.Name, Id = updatdedProduct.Id};
-                var updatedNewProduct = _productService.UpdateProduct(updatedProduct);
+
+            Product product = _productService.Find(id);
+            product.Name = updatdedProduct.Name;
+            product.Desc = updatdedProduct.Desc;
+            product.Img = updatdedProduct.Img;
+            
+            var updatedNewProduct = _productService.UpdateProduct(product);
+            
             return Ok(updatedNewProduct);
         }
     }
