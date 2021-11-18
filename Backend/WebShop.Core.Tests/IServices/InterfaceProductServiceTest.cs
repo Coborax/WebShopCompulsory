@@ -43,6 +43,7 @@ namespace WebShop.Core.Tests.IServices
             Assert.Equal(fakeList, service.GetAll());
         }
 
+
         /// <summary>
         /// Tests whether product service returns product when the product is deleted
         /// </summary>
@@ -57,6 +58,17 @@ namespace WebShop.Core.Tests.IServices
                 .Returns(expected);
             
             Assert.Equal(expected, service.Delete(expected));
+        }
+        
+        [Fact]
+        public void UpdateProductReturnsProduct()
+        {
+            var mock = new Mock<IProductService>();
+            var expected = new Product();
+            mock.Setup(u => u.UpdateProduct(new Product()))
+                .Returns(expected);
+            var service = mock.Object;
+            Assert.Equal(expected, service.UpdateProduct(new Product()));
         }
     }
 }

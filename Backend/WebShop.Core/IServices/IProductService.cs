@@ -9,5 +9,6 @@ namespace WebShop.Core.IServices
         Product Create(Product productCreate);
         Product Find(int id);
         Product Delete(Product productDelete);
+        Product UpdateProduct(Product updatedProduct);
     }
 }

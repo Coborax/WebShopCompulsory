@@ -68,6 +68,26 @@ namespace WebShop.Domain.Services
             return productById;
         }
 
+        public Product UpdateProduct(Product updatedProduct)
+        {
+            if (updatedProduct == null)
+            {
+                throw new ArgumentException("Product to update is null");
+            }
+            
+            var oldProduct = Find(updatedProduct.Id);
+            if (oldProduct == null)
+            {
+                throw new InvalidDataException("Product does not exist");
+            }
+            oldProduct.Desc = updatedProduct.Desc;
+            oldProduct.Name = updatedProduct.Name;
+            var updatedProductFromDb = _unitOfWork.Products.Update(updatedProduct);
+            _unitOfWork.Complete();
+            return updatedProductFromDb;
+        }
+        
+
         public Product Find(int id)
         {
             return _unitOfWork.Products.Find(id);

@@ -270,5 +270,83 @@ namespace WebShop.Domain.Tests.Services
             Assert.Equal("Product is missing", actual.Message);
             mockRepo.Verify(r => r.Create(null), Times.Never());
         }
+
+        #region UpdateProductTests
+
+        [Fact]
+        public void UpdateProduct_WithValidParameter_Returns_UpdatedProduct()
+        {
+            var productFromParam = new Product()
+            {
+                Id = 1,
+                Name = "After update",
+                Desc = "After update",
+                Img = null
+            };
+            
+            var prodToUpdate = new Product()
+            {
+                Id = 1,
+                Name = "Before update",
+                Desc = "Before update",
+                Img = null
+            };
+            
+            var prodAfterUpdate = new Product()
+            {
+                Id = 1,
+                Name = "After update",
+                Desc = "After update",
+                Img = null
+            };
+            
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            var service = new ProductService(mockUow.Object);
+
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Find(productFromParam.Id)).Returns(prodToUpdate);
+            
+            service.UpdateProduct(prodAfterUpdate);
+
+            // Assert
+            mockRepo.Verify(r => r.Find(productFromParam.Id), Times.Once);
+            mockRepo.Verify(r=>r.Update(prodAfterUpdate), Times.Once);
+            Assert.Equal(productFromParam, prodAfterUpdate);
+        }
+
+        [Fact]
+        public void UpdateProduct_WithNullParameter_Returns_InvalidArgumentException()
+        {
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            var service = new ProductService(mockUow.Object);
+
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            var exception = Assert.Throws<ArgumentException>(() => service.UpdateProduct(null));
+            
+            // Assert
+            Assert.Equal("Product to update is null", exception.Message);
+            mockRepo.Verify(r => r.Update(null), Times.Never());
+        }
+
+        [Fact]
+        public void UpdateProduct_IdUnknown_ThrowsInvalidDataException()
+        {
+            var mockRepo = new Mock<IRepo<Product>>();
+            var mockUow = new Mock<IUnitOfWork>();
+            var service = new ProductService(mockUow.Object);
+
+            var prodUnknownId = new Product {Id = 1, Name = "bvkfb"};
+
+            mockUow.Setup(r => r.Products).Returns(mockRepo.Object);
+            mockRepo.Setup(r => r.Find(It.IsAny<int>())).Returns((Product) null);
+            var exception = Assert
+                .Throws<InvalidDataException>(() => service
+                    .UpdateProduct(prodUnknownId));
+            Assert.Equal("Product does not exist", exception.Message);
+        }
+        #endregion
+
     }
 }

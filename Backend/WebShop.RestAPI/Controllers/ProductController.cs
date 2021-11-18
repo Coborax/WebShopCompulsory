@@ -63,5 +63,23 @@ namespace WebShop.RestAPI.Controllers
         {
             return Ok(_productService.Find(id));
         }
+
+        [HttpPut("{id}")]
+        public ActionResult<ProductDto> UpdateProduct(int id, PutProductDto updatdedProduct)
+        {
+            if (id < 1 || id != updatdedProduct.Id)
+            {
+                return BadRequest("Product id and id must match.");
+            }
+
+            Product product = _productService.Find(id);
+            product.Name = updatdedProduct.Name;
+            product.Desc = updatdedProduct.Desc;
+            product.Img = updatdedProduct.Img;
+            
+            var updatedNewProduct = _productService.UpdateProduct(product);
+            
+            return Ok(updatedNewProduct);
+        }
     }
 }
