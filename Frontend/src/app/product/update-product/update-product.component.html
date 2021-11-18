@@ -1,0 +1,9 @@
+<div *ngIf="product">
+<h2>You are to update Product with id: {{product.id}}</h2>
+  <h4>Name </h4>
+  <input type="text" [(ngModel)]="nameUp">
+  <h4>Description </h4>
+  <input type="text" [(ngModel)]="descriptionUp">
+  <p></p>
+  <button type="button" (click)="updateProduct()" class="btn btn-success">Success</button>
+</div>
