@@ -65,6 +65,7 @@ namespace WebShop.RestAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "RequireAdmin")]
         public ActionResult<ProductDto> UpdateProduct(int id, PutProductDto updatdedProduct)
         {
             if (id < 1 || id != updatdedProduct.Id)
