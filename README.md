@@ -17,3 +17,8 @@ The Stories are:
 Solve the assignment in groups of 2-4 students. 
 
 Turn in link for your groups github solution to pass the assignment.
+
+### Default Data
+- A admin user will be created in dev mode with credentials:
+  - Username: admin
+  - Password: admin
